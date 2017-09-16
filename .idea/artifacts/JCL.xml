@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="JCL">
+    <output-path>$PROJECT_DIR$/out/artifacts/JCL</output-path>
+    <root id="archive" name="JCL.jar">
+      <element id="module-output" name="JCL_Crypt" />
+      <element id="module-output" name="JCL_IOTools" />
+      <element id="module-output" name="JCL_Thread" />
+      <element id="module-output" name="JCL_Time" />
+      <element id="module-output" name="JSL_Annotation" />
+      <element id="module-output" name="JSL_Array" />
+      <element id="module-output" name="JSL_EventHandler" />
+      <element id="module-output" name="JSL_JSON" />
+      <element id="module-output" name="JSL_Plugin" />
+      <element id="module-output" name="JSL_Server" />
+    </root>
+  </artifact>
+</component>

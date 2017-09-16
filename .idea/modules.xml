@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JCL_Crypt/JCL_Crypt.iml" filepath="$PROJECT_DIR$/JCL_Crypt/JCL_Crypt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JCL_IOTools/JCL_IOTools.iml" filepath="$PROJECT_DIR$/JCL_IOTools/JCL_IOTools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JCL_Thread/JCL_Thread.iml" filepath="$PROJECT_DIR$/JCL_Thread/JCL_Thread.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JCL_Time/JCL_Time.iml" filepath="$PROJECT_DIR$/JCL_Time/JCL_Time.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSL_Annotation/JSL_Annotation.iml" filepath="$PROJECT_DIR$/JSL_Annotation/JSL_Annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSL_Array/JSL_Array.iml" filepath="$PROJECT_DIR$/JSL_Array/JSL_Array.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSL_EventHandler/JSL_EventHandler.iml" filepath="$PROJECT_DIR$/JSL_EventHandler/JSL_EventHandler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSL_JSON/JSL_JSON.iml" filepath="$PROJECT_DIR$/JSL_JSON/JSL_JSON.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSL_Plugin/JSL_Plugin.iml" filepath="$PROJECT_DIR$/JSL_Plugin/JSL_Plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JSL_Server/JSL_Server.iml" filepath="$PROJECT_DIR$/JSL_Server/JSL_Server.iml" />
+    </modules>
+  </component>
+</project>
