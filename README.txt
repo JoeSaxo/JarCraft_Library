@@ -1,3 +1,2 @@
 JarCraft_Library
-Test change
-master commit
+©JoeSaxo & FelixLetsPlay
