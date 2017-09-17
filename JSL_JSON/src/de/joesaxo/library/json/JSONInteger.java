@@ -1,28 +1,37 @@
 package de.joesaxo.library.json;
 
+import org.jarcraft.library.iotools.ClassDependencyHandler;
+
 /**
  * Created by Jens on 22.08.2017.
  */
 public class JSONInteger extends JSONValue<Integer> {
+
+    protected JSONInteger() {
+        super(null);
+    }
 
     public JSONInteger(Integer value) {
         super(value);
     }
 
     @Override
-    protected Class<Integer> getGenericClass() {
-        return Integer.class;
+    protected boolean isType(Object value) {
+        if (value == null) return false;
+        return ClassDependencyHandler.dependsOn(Integer.class, value.getClass());
     }
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return String.valueOf(getValue());
     }
 
+    @Override
     protected JSONValue<Integer> getObject(String stringJSONValue) {
         return new JSONInteger(Integer.valueOf(stringJSONValue));
     }
 
+    @Override
     protected int isValueType(String stringJSONValue) {
         int length = 0;
         for (char c : stringJSONValue.toCharArray()) {
@@ -48,5 +57,15 @@ public class JSONInteger extends JSONValue<Integer> {
         }
         if (length == 0) return -1;
         return length;
+    }
+
+    @Override
+    public Integer getValue() {
+        return super.getValue();
+    }
+
+    @Override
+    public void setValue(Integer value) {
+        super.setValue(value);
     }
 }

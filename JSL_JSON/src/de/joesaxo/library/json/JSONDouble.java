@@ -1,28 +1,37 @@
 package de.joesaxo.library.json;
 
+import org.jarcraft.library.iotools.ClassDependencyHandler;
+
 /**
  * Created by Jens on 22.08.2017.
  */
 public class JSONDouble extends JSONValue<Double> {
+
+    protected JSONDouble() {
+        super(null);
+    }
 
     public JSONDouble(Double value) {
         super(value);
     }
 
     @Override
-    protected Class<Double> getGenericClass() {
-        return Double.class;
+    protected boolean isType(Object value) {
+        if (value == null) return false;
+        return ClassDependencyHandler.dependsOn(Double.class, value.getClass());
     }
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return String.valueOf(getValue());
     }
 
+    @Override
     protected JSONValue<Double> getObject(String stringJSONValue) {
         return new JSONDouble(Double.valueOf(stringJSONValue));
     }
 
+    @Override
     protected int isValueType(String stringJSONValue) {
         int length = 0;
         boolean dot = false;
@@ -53,5 +62,15 @@ public class JSONDouble extends JSONValue<Double> {
         }
         if (!dot || length == 0) return -1;
         return length;
+    }
+
+    @Override
+    public Double getValue() {
+        return super.getValue();
+    }
+
+    @Override
+    public void setValue(Double value) {
+        super.setValue(value);
     }
 }

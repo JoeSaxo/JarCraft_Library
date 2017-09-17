@@ -1,26 +1,33 @@
 package de.joesaxo.library.json;
 
 import jdk.nashorn.internal.parser.JSONParser;
+import org.jarcraft.library.iotools.ClassDependencyHandler;
 
 /**
  * Created by Jens on 22.08.2017.
  */
 public class JSONString extends JSONValue<String> {
 
+    protected JSONString() {
+        super(null);
+    }
+
     public JSONString(String value) {
         super(value);
     }
 
     @Override
-    protected Class<String> getGenericClass() {
-        return String.class;
+    protected boolean isType(Object value) {
+        if (value == null) return false;
+        return ClassDependencyHandler.dependsOn(String.class, value.getClass());
     }
 
     @Override
     public String toString() {
-        return value == null ? "\"null\"" :JSONParser.quote(value);
+        return getValue() == null ? "\"null\"" :JSONParser.quote(getValue());
     }
 
+    @Override
     protected JSONValue<String> getObject(String stringJSONValue) {
         StringBuilder b = new StringBuilder();
         for (int i = 1; i < stringJSONValue.length()-1; i++) {
@@ -60,6 +67,7 @@ public class JSONString extends JSONValue<String> {
         return new JSONString(b.toString());
     }
 
+    @Override
     protected int isValueType(String stringJSONValue) {
         if (!stringJSONValue.startsWith("\"")) return -1;
         for (int i = 1; i < stringJSONValue.length(); i++) {
@@ -71,5 +79,15 @@ public class JSONString extends JSONValue<String> {
             }
         }
         return -1;
+    }
+
+    @Override
+    public String getValue() {
+        return super.getValue();
+    }
+
+    @Override
+    public void setValue(String value) {
+        super.setValue(value);
     }
 }

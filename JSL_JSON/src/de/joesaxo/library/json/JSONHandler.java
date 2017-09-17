@@ -73,7 +73,7 @@ public class JSONHandler {
     public static JSONValue createJSONValue(File file, boolean subMap) {
         JSONMap hashMap = createJSONValue(new File[]{file});
         if (subMap) return hashMap;
-        return hashMap.value.get(new JSONString(file.getAbsolutePath()));
+        return hashMap.getValue().get(new JSONString(file.getAbsolutePath()));
     }
 
     public static JSONValue createJSONValue(File file) {

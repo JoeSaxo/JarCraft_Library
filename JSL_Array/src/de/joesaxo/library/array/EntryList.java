@@ -1,5 +1,7 @@
 package de.joesaxo.library.array;
 
+import org.jarcraft.library.iotools.ClassDependencyHandler;
+
 import java.util.*;
 
 /**
@@ -129,7 +131,7 @@ public class EntryList<K, V> implements Map<K, V> {
         return new Set(entryList());
     }
 
-    public class Entry<K, V> implements Map.Entry<K, V> {
+    public static class Entry<K, V> implements Map.Entry<K, V> {
 
         private final K key;
         private V value;
@@ -168,6 +170,7 @@ public class EntryList<K, V> implements Map<K, V> {
         public boolean equals(Object o) {
             if (super.equals(o)) return true;
             if (o == null) return false;
+            if (!ClassDependencyHandler.dependsOn(Map.Entry.class, o.getClass())) return false;
             try {
                 Map.Entry<? extends  K, ? extends V> entry = (Map.Entry<? extends  K, ? extends V>) o;
                 if (key == null) {
@@ -277,6 +280,7 @@ public class EntryList<K, V> implements Map<K, V> {
     public boolean equals(Object o) {
         if (super.equals(o)) return true;
         if (o == null) return false;
+        if (!ClassDependencyHandler.dependsOn(Map.class, o.getClass())) return false;
         try {
             Map<? extends K, ? extends V> map = (Map<? extends K, ? extends V>) o;
             if (map.size() != entryList.size()) return false;

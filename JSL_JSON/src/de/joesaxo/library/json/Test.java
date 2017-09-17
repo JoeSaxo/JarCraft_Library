@@ -1,8 +1,9 @@
 package de.joesaxo.library.json;
 
-import org.jarcraft.library.time.StopWatch;
+import de.joesaxo.library.array.EntryList;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jens on 24.08.2017.
@@ -12,21 +13,25 @@ public class Test {
 
     public static void main(String[] args) {
 
-        //System.out.println(JSONValue.Type.getType(new Has));
-        //System.exit(0);
-        HashMap<JSONValue, JSONValue> map1 = new HashMap<>();
-        HashMap<Object, Object> map2 = new HashMap<>();
-        HashMap<Object, Object> map3 = new HashMap<>();
-
-        map1.put(new JSONString("K1"), new JSONString("V1"));
-        map2.put("K1", "V1");
-        map3.put("K1", new StopWatch());
-
-        System.out.println(JSONHandler.isJSON(map1));
-        System.out.println(JSONHandler.isJSON(map2));
-        System.out.println(JSONHandler.isJSON(map3));
+        JSONList uselessData = new JSONList();
+        uselessData.addObjective(9745);
+        uselessData.addObjective(54.79);
+        uselessData.addObjective(false);
+        uselessData.addObjective("useless");
 
 
+
+        EntryList<String, Object> data = new EntryList<>();
+        data.put("name", "test");
+        data.put("age", 18);
+        data.put("booleanValue", true);
+        data.put("money", 1287.76);
+        data.put("uselessData", uselessData);
+
+        JSONValue value = JSONValue.Type.getObject(data);
+
+        System.out.println("Type: " + value.getType());
+        System.out.println(value.toFormattedString(0));
 
     }
 }
