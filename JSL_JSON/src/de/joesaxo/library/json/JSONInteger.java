@@ -66,6 +66,7 @@ public class JSONInteger extends JSONValue<Integer> {
 
     @Override
     public void setValue(Integer value) {
+        if (value == null) throw new NullPointerException(value + " must not be null!");
         super.setValue(value);
     }
 }

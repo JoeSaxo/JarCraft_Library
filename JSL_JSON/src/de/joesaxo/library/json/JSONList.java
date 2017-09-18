@@ -14,29 +14,7 @@ public class JSONList extends JSONValue<List<JSONValue>> implements List<JSONVal
     }
 
     public JSONList(List<? extends Object> value) {
-        super(new ArrayList<JSONValue>(){
-
-            @Override
-            public boolean equals(Object o) {
-                if (super.equals(o)) return true;
-                if (o == null) return false;
-                if (!ClassDependencyHandler.dependsOn(List.class, o.getClass())) return false;
-                try {
-                    List<? extends Object> list = (List<? extends Object>) o;
-                    if (list.size() != size()) return false;
-                    for (int i = 0; i < size(); i++) {
-                        if (get(i) == null) {
-                            if (list.get(i) != null) return false;
-                        } else {
-                            if (!get(i).equals(list.get(i))) return false;
-                        }
-                    }
-                    return true;
-                } catch (ClassCastException e) {
-                    return false;
-                }
-            }
-        });
+        this();
         if (value != null) addAllObjective(value);
     }
 
@@ -126,7 +104,29 @@ public class JSONList extends JSONValue<List<JSONValue>> implements List<JSONVal
     // ---------------------------------------------------------
 
     public JSONList() {
-        this(null);
+        super(new ArrayList<JSONValue>(){
+
+            @Override
+            public boolean equals(Object o) {
+                if (super.equals(o)) return true;
+                if (o == null) return false;
+                if (!ClassDependencyHandler.dependsOn(List.class, o.getClass())) return false;
+                try {
+                    List<? extends Object> list = (List<? extends Object>) o;
+                    if (list.size() != size()) return false;
+                    for (int i = 0; i < size(); i++) {
+                        if (get(i) == null) {
+                            if (list.get(i) != null) return false;
+                        } else {
+                            if (!get(i).equals(list.get(i))) return false;
+                        }
+                    }
+                    return true;
+                } catch (ClassCastException e) {
+                    return false;
+                }
+            }
+        });
     }
 
     @Override

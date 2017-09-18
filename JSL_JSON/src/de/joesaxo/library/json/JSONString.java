@@ -24,7 +24,7 @@ public class JSONString extends JSONValue<String> {
 
     @Override
     public String toString() {
-        return getValue() == null ? "\"null\"" :JSONParser.quote(getValue());
+        return JSONParser.quote(getValue());
     }
 
     @Override
@@ -88,6 +88,7 @@ public class JSONString extends JSONValue<String> {
 
     @Override
     public void setValue(String value) {
+        if (value == null) throw new NullPointerException(value + " must not be null!");
         super.setValue(value);
     }
 }

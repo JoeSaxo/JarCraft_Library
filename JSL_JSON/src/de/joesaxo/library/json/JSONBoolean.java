@@ -46,6 +46,7 @@ public class JSONBoolean extends JSONValue<Boolean> {
 
     @Override
     public void setValue(Boolean value) {
+        if (value == null) throw new NullPointerException(value + " must not be null!");
         super.setValue(value);
     }
 }

@@ -1,7 +1,6 @@
 package de.joesaxo.library.json;
 
 import de.joesaxo.library.array.EntryList;
-import de.joesaxo.library.array.EntryList.Entry;
 import org.jarcraft.library.iotools.ClassDependencyHandler;
 
 import java.util.List;
@@ -17,13 +16,68 @@ public abstract class JSONValue<T> {
 
     protected JSONValue(T value) {
         if (value != null) {
-            this.type = Type.getType(this);
+            type = Type.getType(this);
         } else type = null;
         this.value = value;
     }
 
+    public static String cleanUpJSONString(String stringJSON) {
+        StringBuilder b = new StringBuilder();
+        boolean afz = false;
+        char[] cArray = stringJSON.toCharArray();
+        for (int i = 0; i < cArray.length; i++) {
+            char c = cArray[i];
+            switch(c) {
+                case '\b':
+                case '\t':
+                case '\n':
+                case '\f':
+                case '\r':
+                    break;
+                case '"':
+                    if (!(i > 0 && cArray[i-1] == '\\')) afz = !afz;
+                    b.append('"');
+                    break;
+                case ' ':
+                    if (afz) {
+                        b.append(' ');
+                    }
+                    break;
+                default:
+                    b.append(c);
+                    break;
+            }
+        }
+        return b.toString();
+    }
+
+    public static JSONValue create(String stringJSONValue) {
+        String cleanedUpJSONValueString = cleanUpJSONString(stringJSONValue);
+        return getValueEntry(cleanedUpJSONValueString).getKey();
+    }
+
+    public static JSONValue create(Object objectJSON) {
+        switch (Type.getType(objectJSON)) {
+            case BOOLEAN:
+                return new JSONBoolean((Boolean) objectJSON);
+            case INTEGER:
+                return new JSONInteger((Integer) objectJSON);
+            case DOUBLE:
+                return new JSONDouble((Double) objectJSON);
+            case STRING:
+                return new JSONString((String)objectJSON);
+            case MAP:
+                return new JSONMap((Map<? extends Object, ? extends Object>)objectJSON);
+            case LIST:
+                return new JSONList((List<? extends Object>)objectJSON);
+            case NULL:
+            default:
+                return new JSONNullValue();
+        }
+    }
+
     public Type getType() {
-        return type;
+        return type == null ? Type.NULL : type;
     }
 
     protected T getValue() {
@@ -43,11 +97,15 @@ public abstract class JSONValue<T> {
     @Override
     public abstract String toString();
 
+    public String toFormattedString() {
+        return toFormattedString(0);
+    }
+
     protected String toFormattedString(int tabs) {
         return toString();
     }
 
-    protected static Entry<JSONValue, Integer> getValueEntry(String stringJSONValue) {
+    protected static Map.Entry<JSONValue, Integer> getValueEntry(String stringJSONValue) {
         JSONValue<?> key;
         int value;
 
@@ -58,43 +116,48 @@ public abstract class JSONValue<T> {
                 return new EntryList.Entry(key, value);
             }
         }
-        throw new Error("Illegal string format: string can not be converted to json");
+
+        return new EntryList.Entry(new JSONNullValue(), -1);
     }
 
     public JSONList castToJSONArray() {
-        if (Type.LIST.equals(type)) return (JSONList) this;
+        if (Type.LIST.equals(getType())) return (JSONList) this;
         return null;
     }
 
     public JSONMap castToJSONMap() {
-        if (Type.MAP.equals(type)) return (JSONMap) this;
+        if (Type.MAP.equals(getType())) return (JSONMap) this;
         return null;
     }
 
     public JSONString castToJSONString() {
-        if (Type.STRING.equals(type)) return (JSONString) this;
+        if (Type.STRING.equals(getType())) return (JSONString) this;
         return null;
     }
 
     public JSONDouble castToJSONDouble() {
-        if (Type.DOUBLE.equals(type)) return (JSONDouble) this;
+        if (Type.DOUBLE.equals(getType())) return (JSONDouble) this;
         return null;
     }
 
     public JSONInteger castToJSONInteger() {
-        if (Type.INTEGER.equals(type)) return (JSONInteger) this;
+        if (Type.INTEGER.equals(getType())) return (JSONInteger) this;
         return null;
     }
 
     public JSONBoolean castToJSONBoolean() {
-        if (Type.BOOLEAN.equals(type)) return (JSONBoolean) this;
+        if (Type.BOOLEAN.equals(getType())) return (JSONBoolean) this;
         return null;
+    }
+
+    public boolean isNull() {
+        return getType().isNull();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null) return false;
-        if (!ClassDependencyHandler.dependsOn(type.typeObject.getClass(), o.getClass())) return false;
+        if (!ClassDependencyHandler.dependsOn(getType().typeObject.getClass(), o.getClass())) return false;
         try {
             JSONValue v = (JSONValue) o;
             if (value == null) return v.value == null;
@@ -104,8 +167,8 @@ public abstract class JSONValue<T> {
         }
     }
 
-    public static boolean isJSONValue(Object value) {
-        return ClassDependencyHandler.dependsOn(JSONValue.class, value.getClass());
+    protected static boolean isJSONValue(Object value) {
+        return value == null ? false : ClassDependencyHandler.dependsOn(JSONValue.class, value.getClass());
     }
 
     public enum Type {
@@ -115,7 +178,8 @@ public abstract class JSONValue<T> {
         STRING(new JSONString()),
         DOUBLE(new JSONDouble()),
         INTEGER(new JSONInteger()),
-        BOOLEAN(new JSONBoolean());
+        BOOLEAN(new JSONBoolean()),
+        NULL(new JSONNullValue());
 
         private JSONValue typeObject;
 
@@ -124,28 +188,28 @@ public abstract class JSONValue<T> {
             this.typeObject = typeObject;
         }
 
-        public boolean isType(JSONValue value) {
-            return value == null ? false : equals(value.type);
+        public boolean isNull() {
+            return equals(NULL);
         }
 
         private static Type getType(JSONValue value) {
             for (Type type : values()) {
                 if (ClassDependencyHandler.dependsOn(type.typeObject.getClass(), value.getClass())) return type;
             }
-            return null;
+            return NULL;
         }
 
         protected static Type getType(Object value) {
             for (Type type : values()) {
                 if (type.typeObject.isType(value)) return type;
             }
-            return null;
+            return NULL;
         }
 
         protected static JSONValue getObject(Object value) {
             Type type = getType(value);
             if (type == null) {
-                return null;
+                return new JSONNullValue();
             }
             switch (type) {
                 case LIST:
@@ -161,7 +225,7 @@ public abstract class JSONValue<T> {
                 case BOOLEAN:
                     return new JSONBoolean((boolean)value);
                 default:
-                    return null;
+                    return new JSONNullValue();
             }
         }
 

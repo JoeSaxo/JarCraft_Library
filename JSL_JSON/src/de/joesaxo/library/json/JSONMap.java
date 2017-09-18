@@ -249,7 +249,7 @@ public class JSONMap extends JSONValue<EntryList<JSONValue, JSONValue>> implemen
     // ---------------------------------------------------------
 
     public JSONMap() {
-        super(null);
+        this(null);
     }
 
     @Override
